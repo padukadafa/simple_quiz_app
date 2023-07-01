@@ -23,7 +23,7 @@ class _KuisPageState extends State<KuisPage> {
     final answerIndex = Random().nextInt(3);
 
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: controller.willPop,
       child: Scaffold(
         appBar: AppBar(
           leading: const SizedBox(),
@@ -115,7 +115,7 @@ class _KuisPageState extends State<KuisPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Container(
+        SizedBox(
           width: 300.w,
           height: 40.h,
           child: Stack(
