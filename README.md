@@ -1,6 +1,6 @@
-# flutter_application_2
+# Simple Quiz
 
-A new Flutter project.
+Project for [Willem humau](https://web.facebook.com/willem.humau.5)
 
 ## Getting Started
 
