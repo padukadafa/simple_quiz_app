@@ -20,7 +20,8 @@ class _KuisPageState extends State<KuisPage> {
   Widget build(BuildContext context) {
     final controller = KuisController(context);
     final kuis = controller.getKuis();
-    final answerIndex = Random().nextInt(3);
+    final keyAnswer = Random().nextInt(3);
+    final answerIndex = Random().nextInt(1);
 
     return WillPopScope(
       onWillPop: controller.willPop,
@@ -53,56 +54,91 @@ class _KuisPageState extends State<KuisPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: kuis.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Jumlah kolom
-                    childAspectRatio: 2,
-                    mainAxisSpacing: 10.w,
-                    crossAxisSpacing: 10.w,
+              Container(
+                margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                child: Text(
+                  kuis[keyAnswer].nama,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                  itemBuilder: (BuildContext context, int index) {
-                    var generatedColor =
-                        Random().nextInt(Colors.primaries.length);
-
-                    return GestureDetector(
-                      onTap: () {
-                        if (_currentKuis == 10) {
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => ScorePage(
-                              score: (correctAnswer / 10 * 100).toInt(),
-                            ),
-                          ));
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (keyAnswer == answerIndex) {
+                          correctAnswer++;
                         }
-                        setState(() {
-                          _currentKuis++;
-                          if (index == answerIndex) {
-                            correctAnswer++;
-                          }
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.primaries[generatedColor],
-                          borderRadius: BorderRadius.circular(12.w),
-                        ),
-                        child: Text(
-                          kuis[index].nama,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24.sp,
-                          ),
+                        if (_currentKuis == 10) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => ScorePage(
+                                score: (correctAnswer / 10 * 100).toInt(),
+                              ),
+                            ),
+                          );
+                        }
+                        _currentKuis++;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 190.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12.w),
+                      ),
+                      child: Text(
+                        "Benar",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.sp,
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (keyAnswer != answerIndex) {
+                          correctAnswer++;
+                        }
+                        if (_currentKuis == 10) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => ScorePage(
+                                score: (correctAnswer / 10 * 100).toInt(),
+                              ),
+                            ),
+                          );
+                        }
+                        _currentKuis++;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 190.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(12.w),
+                      ),
+                      child: Text(
+                        "Salah",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
